@@ -69,5 +69,4 @@ BuildDash/settings_prod_mock.py
 *.sublime-workspace
 test/
 .vscode/
-crunch
-static/data/
+crunch/static/base_data/

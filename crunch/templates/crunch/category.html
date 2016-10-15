@@ -1,0 +1,189 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+<!--  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">-->
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+  <style>
+  .container-fluid {
+    width: 95%;
+  }
+  img {
+    border: 0px;
+    box-shadow: 0 0 0px;
+  }
+  #header_wrap {
+    height: 100px;
+  }
+  .inner {
+    padding: 0;
+  }
+  #project_title {
+    margin-top: -30px;
+  }
+/*.rotatemodal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+                url('{% static "img/swirl.gif" %}')
+                50% 50%
+                no-repeat;
+}*/
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .rotatemodal {
+    display: block;
+}
+  </style>
+{% block page_head %} {% endblock %}
+    <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+    <script type='text/javascript'>
+    var cats = ['Marketplaces', 'Veterinary', 'Crowdsourcing', 'Data Privacy', 'Surfing Community', 'B2B', 'Online Video Advertising', 'Event Management', 'Corporate IT', 'Health and Insurance', 'Crowdfunding', 'Performance Marketing', 'Incentives', 'Social Television', 'Communications Infrastructure', 'Child Care', 'Lighting', 'Virtual Currency', 'Tourism', 'Cloud Data Services', 'Training', 'Invention', 'Knowledge Management', 'Celebrity', 'Automated Kiosk', 'Call Center Automation', 'Social Media Marketing', 'Pre Seed', 'Sensors', 'Restaurants', 'Interface Design', 'Portals', 'Clinical Trials', 'Customer Support Tools', 'Testing', 'Water Purification', 'Defense', 'Health Services Industry', 'SNS', 'Non Profit', 'Telecommunications', 'Ticketing', 'Language Learning', 'Video Streaming', 'RFID', 'Local Based Services', 'Mobile Payments', 'High Schools', 'Meeting Software', '3D', 'Delivery', 'Theatre', 'Automotive', 'Collaboration', 'Brewing', 'Interior Design', 'Software Compliance', 'Intellectual Property', 'M2M', 'Game', 'Property Management', 'Information Services', 'Business Information Systems', 'Proximity Internet', 'Unifed Communications', 'NFC', 'Health Care', 'All Students', 'Green', 'Distribution', 'Project Management', 'Home Renovation', 'Electrical Distribution', 'Adaptive Equipment', 'Identity Management', 'Private School', 'Certification Test', 'Cloud Computing', 'Recycling', 'Home Decor', 'Photo Editing', 'Resorts', 'User Experience Design', 'Blogging Platforms', 'Technology', 'Specialty Chemicals', 'Postal and Courier Services', 'Privacy', 'Film Distribution', 'SMS', 'Intellectual Asset Management', 'Mac Applications', 'Consumer Behavior', 'Building Products', 'Flowers', 'Advertising Platforms', 'Mobile Coupons', 'Consumer Electronics', 'Finance Technology', 'Healthcare Services', 'Travel & Tourism', 'Incubators', 'RIM', 'Aerospace', 'Media', 'Carbon', 'Designers', 'Photo Sharing', 'Real Time', 'Governments', 'Online Gaming', 'Active Lifestyle', 'Tobacco', 'Public Relations', 'E-Commerce Platforms', 'Local Advertising', 'Banking', 'Online Auctions', 'University Students', 'Biotechnology and Semiconductor', 'Retail', 'Open Source', 'Enterprise Resource Planning', 'Medication Adherence', 'Energy Management', 'Realtors', 'Ediscovery', 'Entrepreneur', 'Video', 'Medical Professionals', 'Casual Games', 'Monetization', 'Concentrated Solar Power', 'Online Identity', 'Retirement', 'Freemium', 'P2P Money Transfer', 'Loyalty Programs', 'Career Planning', 'Registrars', 'Personal Finance', 'Internet Technology', 'Digital Rights Management', 'Corporate Training', 'CAD', 'Film', 'MMO Games', 'Video Games', 'User Interface', 'Identity', 'New Technologies', 'Collaborative Consumption', 'Music Venues', 'Television', 'Web Design', 'Productivity Software', 'Mobile Infrastructure', 'Coworking', 'Baby Boomers', 'GreenTech', 'Social News', 'Vertical Search', 'Credit Cards', 'EdTech', 'Communications Hardware', 'Subscription Service', 'Machine Learning', 'In-Flight Entertainment', 'Reputation', 'Tablets', 'Linux', 'Politics', 'Direct Advertising', 'Textiles', 'Virtual Worlds', 'Video on Demand', 'Email Newsletters', 'Polling', 'Social Entrepreneurship', 'Enterprise Application', 'Heavy Industry', 'Moneymaking', 'Health Diagnostics', 'Entertainment Industry', 'Psychology', 'Health Care Information Technology', 'Social Business', 'Mobile Video', 'Law Enforcement', 'Dental', 'Subscription Businesses', 'Custom Retail', 'Digital Media', 'Chemicals', 'Semiconductor Manufacturing Equipment', 'Mobile Shopping', 'Kids', 'Cryptocurrency', 'Cable', 'Business Services', 'Mobile', 'Wholesale', 'Online Travel', 'Simulation', 'Film Production', 'iPhone', 'Wine And Spirits', 'Mobility', 'Semiconductors', 'Telephony', 'IT Management', 'Hospitals', 'Fleet Management', 'Multi-level Marketing', 'Twin-Tip Skis', 'Reviews and Recommendations', 'EDA Tools', 'Consumers', 'High Tech', 'Eyewear', 'Legal', 'Sports', 'Governance', 'Business Intelligence', 'Natural Language Processing', 'Renewable Energies', 'Physicians', 'Consumer Internet', 'Nightclubs', 'Charter Schools', 'Intelligent Systems', 'Reading Apps', 'Debt Collecting', 'Public Transportation', 'Construction', 'Biomass Power Generation', 'Flash Storage', 'Food Processing', 'Google Apps', 'Clean Technology', 'DOD/Military', 'Content Creators', 'Cloud Management', 'Presentations', 'Lingerie', 'Architecture', 'Creative Industries', 'Security', 'Renewable Tech', 'All Markets', 'Peer-to-Peer', 'Big Data', 'Public Safety', 'Online Education', 'Group Email', 'Batteries', 'Chat', 'Real Estate', 'Professional Services', 'E-Books', 'Universities', 'Land Developers', 'Assisitive Technology', 'Home Owners', 'Creative', 'Maps', 'Smart Building', 'Social Media Management', 'Golf Equipment', 'Network Security', 'Local', 'Exercise', 'Financial Exchanges', 'Home Automation', 'Transportation', 'SaaS', 'Enterprises', 'Group SMS', 'Brokers', 'Freelancers', 'SEO', 'Cyber Security', 'Industrial Automation', 'Nonprofits', 'Wealth Management', 'Search', 'Visual Search', 'Waste Management', 'Storage', 'Vulnerability Management', 'Bio-Pharm', 'Parking', 'Supply Chain Management', 'Social Recruiting', 'Social Investing', 'Auctions', 'Pervasive Computing', 'Taxis', 'Shoes', 'PaaS', 'Consulting', 'Independent Pharmacies', 'Cyber', 'Developer APIs', 'Analytics', 'Toys', 'Mobile Software Tools', 'Financial Services', 'Video Conferencing', 'Predictive Analytics', 'Online Scheduling', 'Therapeutics', 'Salesforce Killers', 'SexTech', 'Recruiting', 'Outsourcing', 'Writers', 'Spas', 'Soccer', 'Development Platforms', 'Transaction Processing', 'Oil', 'Business Travelers', 'Flash Sales', 'Mobile Health', 'Optical Communications', 'Space Travel', 'Corporate Wellness', 'iPod Touch', 'Infrastructure Builders', 'Web Presence Management', 'Graphics', 'Plumbers', 'Product Search', 'FreetoPlay Gaming', 'Speech Recognition', 'Recreation', 'Facebook Applications', 'Hedge Funds', 'Archiving', 'Computers', 'Journalism', 'Social Buying', 'Semantic Search', 'Commodities', 'Printing', 'Games', 'Advertising', 'Databases', 'Messaging', 'Mobile Emergency&Health', 'Employer Benefits Programs', 'Spam Filtering', 'Windows Phone 7', 'Market Research', 'Homeland Security', 'Service Providers', 'Augmented Reality', 'Groceries', 'Music Services', 'Auto', 'Logistics Company', 'QR Codes', 'Operating Systems', 'Indoor Positioning', 'Small and Medium Businesses', 'Human Resources', 'Twitter Applications', 'Data Centers', 'Religion', 'Systems', 'Babies', 'Energy Storage', 'Local Coupons', 'Enterprise Security', 'Gps', 'Infrastructure', 'App Stores', 'Photography', 'Oil & Gas', 'Sustainability', 'Synchronization', 'Hip Hop', 'Solar', 'Data Security', 'Services', 'Translation', 'Material Science', 'Furniture', 'Ventures for Good', 'Physical Security', 'Natural Gas Uses', 'Field Support Services', 'Colleges', 'Commercial Solar', 'Price Comparison', 'Product Design', 'Sporting Goods', 'Fitness', 'Mobile Advertising', 'Mobile Commerce', 'Usability', 'Opinions', 'Distributors', '3D Technology', 'K-12 Education', 'High School Students', 'Promotional', 'E-Commerce', 'Virtual Desktop', 'Internet Infrastructure', 'Education', 'Guides', 'iPad', 'Venture Capital', 'Networking', 'Business Productivity', 'Advanced Materials', 'Advertising Networks', 'Apps', 'Bicycles', 'Real Estate Investors', 'Android', 'Social Network Media', 'CRM', 'Application Performance Monitoring', 'Social Media', 'Shopping', 'Contact Management', 'Web Browsers', 'Utilities', 'Virtual Workforces', 'Digital Entertainment', 'Water', 'Task Management', 'Nanotechnology', 'Environmental Innovation', 'Online Rental', 'Social Media Platforms', 'BPO Services', 'Social Games', 'Procurement', 'Optimization', 'Online Reservations', 'Hospitality', 'Search Marketing', 'Concerts', 'TV Production', 'Senior Health', 'Mobile Games', 'Insurance', 'Specialty Retail', 'Geospatial', 'Design', 'Licensing', 'Curated Web', 'Enterprise 2.0', 'Developer Tools', 'Animal Feed', 'Commercial Real Estate', 'Video Chat', 'User Testing', 'Travel', 'Office Space', 'Match-Making', 'Big Data Analytics', 'Pharmaceuticals', 'Music', 'Gift Registries', 'Advertising Exchanges', 'Events', 'Human Computer Interaction', 'Internet Service Providers', 'Health and Wellness', 'Beauty', 'Cars', 'Text Analytics', 'Nutraceutical', 'Doctors', 'Communities', 'Digital Signage', 'Video Editing', 'VoIP', 'Women', 'Senior Citizens', 'Textbooks', 'CA', 'Lifestyle Products', 'Contact Centers', 'Broadcasting', 'Hardware + Software', 'Navigation', 'Information Technology', 'Software', 'Logistics', 'FinTech', 'Natural Resources', 'Innovation Management', 'Productivity', 'Risk Management', 'College Campuses', 'Enterprise Software', 'Biometrics', 'Forums', 'Energy', 'Hotels', 'Collectibles', 'Cooking', 'Medical Devices', 'Content', 'Google Glass', 'Specialty Foods', 'DIY', 'Email Marketing', 'Direct Marketing', 'Vacation Rentals', 'Group Buying', 'Sunglasses', 'Sales and Marketing', 'Lead Generation', 'Organic Food', 'Direct Sales', 'IaaS', 'Internet of Things', 'PC Gaming', 'Residential Solar', 'Medical', 'Application Platforms', 'Face Recognition', 'Low Bid Auctions', 'Bridging Online and Offline', 'Teachers', 'Diagnostics', 'Domains', 'Biotechnology', 'Baby Accessories', 'Mobile Security', 'Life Sciences', 'Classifieds', 'Estimation and Quoting', 'Employment', 'Motors', 'General Public Worldwide', 'Educational Games', 'Insurance Companies', 'B2B Express Delivery', 'Stock Exchanges', 'Cloud Gaming', 'Nightlife', 'Visualization', 'Surveys', 'Local Search', 'Browser Extensions', 'Fantasy Sports', 'nan', 'Virtual Goods', '3D Printing', 'Handmade', 'Bitcoin', 'Web CMS', 'Cannabis', 'Trusted Networks', 'Pets', 'Internet', 'Gambling', 'Mobile Social', 'Image Recognition', 'IT and Cybersecurity', 'Data Visualization', 'Parenting', 'Advice', 'Gas', 'Leisure', 'Hunting Industry', 'Document Management', 'News', 'Demographies', 'Engineering Firms', 'Tracking', 'Offline Businesses', 'iOS', 'Shipping', 'Mens Specific', 'Rental Housing', 'Algorithms', 'Career Management', 'Data Mining', 'Wind', 'Fashion', 'Art', 'Innovation Engineering', 'Mechanical Solutions', 'Robotics', 'Teenagers', 'Gamification', 'Trading', 'Lasers', 'Personalization', 'Social Fundraising', 'English-Speaking', 'Sales Automation', 'Skill Assessment', 'Product Development Services', 'Jewelry', 'Home & Garden', 'Private Social Networking', 'Service Industries', 'Oil and Gas', 'Mass Customization', 'Email', 'Coffee', 'Farming', 'MicroBlogging', 'Vending and Concessions', 'Gadget', 'Genetic Testing', 'Social CRM', 'Retail Technology', 'Fmcg', 'Social Media Monitoring', 'Social Media Advertising', 'Minerals', 'Enterprise Search', 'Lifestyle', 'Ad Targeting', 'Mobile Search', 'Comics', 'Customer Service', 'New Product Development', 'mHealth', 'WebOS', 'Web Hosting', 'Outdoors', 'Game Mechanics', 'EBooks', 'UV LEDs', 'Electronic Health Records', 'Agriculture', 'Social Travel', 'Fraud Detection', 'Point of Sale', 'Personal Health', 'Social Bookmarking', 'Gift Card', 'Comparison Shopping', 'Social Commerce', 'Billing', 'Online Dating', 'Cloud Infrastructure', 'Entertainment', 'App Marketing', 'Cosmetics', 'Artists Globally', 'Baby Safety', 'Nutrition', 'Finance', 'Smart Grid', 'Franchises', 'Test and Measurement', 'Mobile Devices', 'Landscaping', 'Mobile Enterprise', 'Information Security', 'Investment Management', 'Interest Graph', 'Web Development', 'Staffing Firms', 'File Sharing', 'Elder Care', 'Shared Services', 'Internet Radio Market', 'Brand Marketing', 'Bioinformatics', 'Emerging Markets', 'Energy Efficiency', 'Neuroscience', 'Business Development', 'Government Innovation', 'Tutoring', 'Embedded Hardware and Software', 'Consumer Lending', 'Craft Beer', 'Industrial', 'Gold', 'Young Adults', 'Tea', 'Tech Field Support', 'Marketing Automation', 'Impact Investing', 'Data Integration', 'Web Tools', 'Dietary Supplements', 'Startups', 'Charity', 'Local Businesses', 'Video Processing', 'Content Syndication', 'Funeral Industry', 'Weddings', 'Publishing', 'Clean Energy', 'Discounts', 'Semantic Web', 'Consumer Goods', 'Green Consumer Goods', 'Electronics', 'Hardware', 'Fuels', 'Location Based Services', 'Families', 'Internet Marketing', 'Social Search', 'Online Shopping', 'Wireless', 'Mining Technologies', 'Mac', 'Diabetes', 'Internet TV', 'Manufacturing', 'Coupons', 'Content Delivery', 'Data Center Infrastructure', 'Humanitarian', 'Organic', 'Cloud Security', 'Recipes', 'Business Analytics', 'Payments', 'Accounting', 'Audio', 'Rehabilitation', 'Boating Industry', 'Contests', 'Wearables', 'Credit', 'Computer Vision', 'Adventure Travel', 'Lead Management', 'Content Discovery', 'Virtualization', 'Data Center Automation', 'Displays', 'Artificial Intelligence']
+
+    var myKey= 'AIzaSyDBr3wd4fvMAtG26Sf80EMfMv36VvzhEq0';
+     google.charts.load('45', {'packages': ['corechart','geochart'], 'mapsApiKey': myKey});
+     google.charts.setOnLoadCallback(drawMarkersMap);
+     google.charts.setOnLoadCallback(drawChart);
+
+      function drawMarkersMap() {
+      var data = google.visualization.arrayToDataTable([
+        ['City',   'Total Number of Startups', 'Startup Health Score'],
+        ['New York',  6, 50],
+        ['New Delhi', 8, 27],
+        ['Bengaluru',  3, 23]
+      ]);
+
+      var options = {
+        sizeAxis: { minValue: 0, maxValue: 100 },
+        resolution: 'continents',
+        displayMode: 'markers',
+        colorAxis: {colors: ['red', 'green']}
+      };
+
+      var chart = new google.visualization.GeoChart(document.getElementById('geo_div'));
+      chart.draw(data, options);
+    };
+
+      function drawChart() {
+        var achart_data = google.visualization.arrayToDataTable([
+          ['Year', 'Bengaluru', 'New Delhi'],
+          ['2013',  1000,      400],
+          ['2014',  1170,      460],
+          ['2015',  660,       1120],
+          ['2016',  1030,      540]
+        ]);
+
+        var achart_options = {
+          title: 'History of investments for this category in top locations',
+          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var achart_chart = new google.visualization.AreaChart(document.getElementById('area_div'));
+        achart_chart.draw(achart_data, achart_options);
+      };
+    </script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+             CrunchViz</a>
+            <ul class="nav navbar-nav" id="navMenuItems">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/insights">Location</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+    {% block main_content %} {% endblock %}
+    <select name="" id="categorySelect">
+      <option value="" disabled selected>Select an option</option>
+    </select>
+    <h4>Sort by funding round:</h4>
+    <select name="" id="categorySelect">
+      <option value="" disabled selected>Select an option</option>
+      <option value="seed">Seed</option>
+      <option value="angel">Angel</option>
+      <option value="venture">Venture</option>
+      <option value="private">Private Equity</option>
+    </select>
+    <h4>Toggle Startup Health Score:</h4>
+    <input type="checkbox" checked data-toggle="toggle">
+    <hr>
+        <div id="geo_div" style="width: 900px; height: 500px;"></div>
+        <hr>
+        <div id="area_div" style="width: 100%; height: 500px;"></div>
+
+    <footer>
+    <div class="row bg-info">
+      <div class="col-md-6 tab-content">
+      <p>(c) CrunchViz</p>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+  </footer>
+    </div>
+  <div class="rotatemodal"></div>
+    <!-- jQuery first, then Bootstrap JS. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.2/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://rawgit.com/dwilhelm89/LeafletSlider/master/SliderControl.js" type="text/javascript"></script>
+    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script type="text/javascript">
+$(document).ready(function() {
+  sort_cat = cats.sort();
+  $.each(sort_cat, function(c, v) {
+    $('#categorySelect').append('<option val="'+v+'">'+v+'</option>');
+  });
+
+});
+
+$(document).change('#categorySelect', function(){
+var selCat = $('#categorySelect option:selected').val();
+console.log(selCat);
+
+$.get('/get_by_category/?cat='+selCat, function(data){
+  console.log(data);
+});
+
+});
+    </script>
+
+
+
+</body>
+
+</html>
