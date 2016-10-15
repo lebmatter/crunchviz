@@ -68,13 +68,13 @@ body.loading .rotatemodal {
 
      var dataArray = [
         ['City',   'Total Number of Startups', 'Startup Health Score'],
-        ['New York',  6, 50],
-        ['New Delhi', 8, 27],
-        ['Bengaluru',  3, 23],
-        ['Bercelona',  6, 50],
-        ['Pune', 8, 67],
-        ['Kochi',  3, 83],
-        ['London',  6, 1]
+        ['New York',  50, 6],
+        ['New Delhi', 27, 8],
+        ['Bengaluru',  23, 3],
+        ['Bercelona',  50, 6],
+        ['Pune', 67, 8],
+        ['Kochi',  83, 3],
+        ['London',  1, 6]
       ];
       function drawMarkersMap() {
       var data = google.visualization.arrayToDataTable(dataArray);
@@ -144,6 +144,7 @@ body.loading .rotatemodal {
     <input type="checkbox" checked data-toggle="toggle">
     <hr>
     <h4>Health of startup investments for the selected category in different locations:</h4>
+
         <div id="geo_div" style="width: 900px; height: 500px;"></div>
         <hr>
         <div id="area_div" style="width: 100%; height: 500px;"></div>
