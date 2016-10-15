@@ -66,13 +66,18 @@ body.loading .rotatemodal {
      google.charts.setOnLoadCallback(drawMarkersMap);
      google.charts.setOnLoadCallback(drawChart);
 
-      function drawMarkersMap() {
-      var data = google.visualization.arrayToDataTable([
+     var dataArray = [
         ['City',   'Total Number of Startups', 'Startup Health Score'],
         ['New York',  6, 50],
         ['New Delhi', 8, 27],
-        ['Bengaluru',  3, 23]
-      ]);
+        ['Bengaluru',  3, 23],
+        ['Bercelona',  6, 50],
+        ['Pune', 8, 67],
+        ['Kochi',  3, 83],
+        ['London',  6, 1]
+      ];
+      function drawMarkersMap() {
+      var data = google.visualization.arrayToDataTable(dataArray);
 
       var options = {
         sizeAxis: { minValue: 0, maxValue: 100 },
@@ -177,6 +182,9 @@ console.log(selCat);
 
 $.get('/get_by_category/?cat='+selCat, function(data){
   console.log(data);
+  $.each(data, function(k,v){
+
+  });
 });
 
 });
