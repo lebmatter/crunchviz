@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from crunch.views import view_by_category,view_by_location, index,get_by_category
+from crunch.views import view_by_category,sort_by_funding, index,get_by_category
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^view-by-category/', view_by_category),
-    url(r'^view-by-location/', view_by_location),
+    url(r'^sort_by_funding/', sort_by_funding),
     url(r'^get_by_category/', get_by_category),
     url(r'^$', index),
 ]

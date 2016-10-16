@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
-from dataop import get_city_wise_acquisition_rate_of_a_category
+from dataop import get_city_wise_acquisition_rate_of_a_category, get_company_list_based_on_catagoty_range_series
 import json
 
 def get_health_by_category():
@@ -16,10 +16,19 @@ def get_by_category(request):
         cat = request.GET['cat']
         print cat
         rdict = get_city_wise_acquisition_rate_of_a_category(cat)
-        # print rdict
-        rdict = json.dumps(rdict)
         print rdict
-        return JsonResponse('')
+        return JsonResponse({'data': rdict})
+
+@csrf_exempt
+def sort_by_funding(request):
+    if request.method == 'GET':
+        categoryName = request.GET['cat']
+        range = long(request.GET['amount'])
+        ventureType = request.GET['round']
+        print categoryName, range, ventureType
+        rdict = get_company_list_based_on_catagoty_range_series(categoryName,range,ventureType)
+        print rdict
+        return JsonResponse(rdict, safe=False)
 
 def index(request):
     return redirect("/view-by-category/")
